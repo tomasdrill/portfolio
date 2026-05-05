@@ -242,8 +242,56 @@
             .navlist a{display:block;padding:17px;font-size:22px;border-top:1px solid #2f3138;border-bottom:1px solid #000;}
             .navlist.active{right:0;}
         }
-        @media(max-width:600px){ .hero-right{display:grid;grid-template-columns:1fr 1fr;} }
-        @media(max-width:470px){ :root{--h1-font:3rem;--h2-font:2rem;} }
+        @media(max-width:700px){ .dl-hero{flex-direction:column; text-align:center;} .btn-dl-all{width:100%; justify-content:center;} }
+
+        /* ══ DOWNLOADS ══ */
+        .downloads { background:var(--bg-color); }
+
+        .dl-hero {
+            display:flex; align-items:center; justify-content:space-between; gap:2rem;
+            background:#2d343f; border-radius:28px;
+            border:1px solid var(--main-color); box-shadow:0 0 20px rgba(102,192,244,.2);
+            padding:2rem 2.5rem; margin-bottom:3rem;
+        }
+        .dl-hero-text h3 { font-size:1.3rem; font-weight:800; margin-bottom:.4rem; }
+        .dl-hero-text p  { color:var(--other-color); font-size:.9rem; }
+
+        .btn-dl-all {
+            display:inline-flex; align-items:center; gap:.6rem; flex-shrink:0;
+            padding:14px 28px; background:var(--main-color); color:var(--bg-color);
+            border:2px solid var(--main-color); border-radius:24px;
+            font-size:15px; font-weight:700; transition:all .50s ease; white-space:nowrap;
+        }
+        .btn-dl-all i { font-size:1.2rem; }
+        .btn-dl-all:hover { background:transparent; color:var(--main-color); box-shadow:0 0 25px var(--main-color); }
+
+        .dl-group { margin-bottom:2.5rem; }
+
+        .dl-group-header {
+            display:flex; align-items:center; gap:.7rem;
+            background:var(--other-color3); color:var(--main-color);
+            font-size:.8rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+            padding:.65rem 1.2rem; border-radius:24px; margin-bottom:1.2rem;
+            width:fit-content; box-shadow:0 0 5px var(--main-color);
+        }
+        .dl-group-header i { font-size:1rem; }
+
+        .dl-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem; }
+
+        .dl-card {
+            display:flex; align-items:center; gap:1rem;
+            background:#2d343f; border-radius:14px;
+            border:1px solid transparent; box-shadow:0 0 5px var(--main-color);
+            padding:1rem 1.3rem; transition:all .4s ease; color:var(--text-color);
+        }
+        .dl-card:hover { border:1px solid var(--main-color); box-shadow:0 0 18px var(--main-color); transform:translateY(-3px); }
+        .dl-card > i:first-child { font-size:1.8rem; color:var(--main-color); flex-shrink:0; }
+        .dl-info { flex:1; min-width:0; }
+        .dl-title { display:block; font-size:.88rem; font-weight:600; color:var(--text-color); margin-bottom:.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .dl-meta  { display:block; font-size:.72rem; color:var(--other-color); }
+        .dl-icon  { font-size:1.2rem; color:var(--other-color3); flex-shrink:0; transition:color .3s; }
+        .dl-card:hover .dl-icon { color:var(--main-color); }
+
     </style>
 </head>
 
@@ -257,7 +305,7 @@
         <li><a href="index.html">Accueil</a></li>
         <li><a href="entreprise.html">Entreprise</a></li>
         <li><a href="realisations.html" class="active">Réalisations</a></li>
-        <li><a href="veille.html">Veille</a></li>
+        <li><a href="index.html#veille">Veille</a></li>
     </ul>
 </header>
 
@@ -789,6 +837,184 @@
         </div>
 
     </div>
+</section>
+
+<!-- ══ TÉLÉCHARGEMENTS ══ -->
+<section class="downloads" id="documents">
+    <div class="center-text">
+        <h2>Télécharger les <span>documents</span></h2>
+    </div>
+
+    <!-- Bouton tout télécharger -->
+    <div class="dl-hero">
+        <div class="dl-hero-text">
+            <h3>Tous les documents E5</h3>
+            <p>18 rapports, procédures et fiches couvrant l'ensemble des réalisations du tableau de synthèse.</p>
+        </div>
+        <a href="assets/docs/tous_les_documents.zip" download class="btn-dl-all">
+            <i class="ri-download-cloud-2-line"></i>
+            Tout télécharger (.zip)
+        </a>
+    </div>
+
+    <!-- Formation -->
+    <div class="dl-group">
+        <div class="dl-group-header">
+            <i class="ri-graduation-cap-line"></i>
+            Formation – Institut IEF2i
+        </div>
+        <div class="dl-grid">
+            <a href="assets/docs/18_fiche_presentation_portfolio.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Fiche présentation portfolio</span>
+                    <span class="dl-meta">HTML · CSS · JS · GitHub Pages</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/07_rapport_tp_windows_server.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport TP Windows Server</span>
+                    <span class="dl-meta">Active Directory · DHCP · DNS</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/14_tableau_veille_informationnelle.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Tableau de veille informationnelle</span>
+                    <span class="dl-meta">Minage GPU · 13 relevés datés</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/08_rapport_tp_vmware.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport TP Virtualisation VMware</span>
+                    <span class="dl-meta">VMs · Snapshots · Réseaux virtuels</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/12_documentation_montage_rig_gpu.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Documentation montage rig GPU</span>
+                    <span class="dl-meta">6 GPU · BIOS · Gestion thermique</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/13_procedure_installation_hiveos.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Procédure installation HiveOS</span>
+                    <span class="dl-meta">T-Rex Miner · Overclock · SSH</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stage 1 -->
+    <div class="dl-group">
+        <div class="dl-group-header">
+            <i class="ri-building-2-line"></i>
+            Stage 1ère année – Tikoun Info (2025)
+        </div>
+        <div class="dl-grid">
+            <a href="assets/docs/01_rapport_maintenance_preventive.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport maintenance préventive</span>
+                    <span class="dl-meta">Parc informatique · Check-list</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/15_rapport_diagnostic_pannes_reseau.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport diagnostic pannes réseau</span>
+                    <span class="dl-meta">ping · tracert · DHCP · câblage</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/02_rapport_assistance_utilisateurs.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport assistance utilisateurs</span>
+                    <span class="dl-meta">Helpdesk · 6 incidents traités</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/03_rapport_administration_systeme.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport administration système</span>
+                    <span class="dl-meta">AD · Exchange · Sauvegardes</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/16_plan_sauvegarde_rapport_verification.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Plan de sauvegarde & vérification</span>
+                    <span class="dl-meta">Règle 3-2-1 · Veeam · Tests restore</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="dl-group">
+        <div class="dl-group-header">
+            <i class="ri-building-2-line"></i>
+            Stage 2ème année – Tikoun Info (2026)
+        </div>
+        <div class="dl-grid">
+            <a href="assets/docs/09_rapport_installation_postes_tikoun.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport installation postes clients</span>
+                    <span class="dl-meta">8 postes · Windows 11 · Fiche recette</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/17_procedures_techniques_clients.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Procédures techniques clients</span>
+                    <span class="dl-meta">Wi-Fi · MDP · Lecteur réseau · Sauvegarde</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/05_rapport_supervision_ssh_hiveos.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport supervision SSH & HiveOS</span>
+                    <span class="dl-meta">Linux · Monitoring · Incidents</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/10_rapport_intervention_securite_malwares.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport intervention sécurité</span>
+                    <span class="dl-meta">48 malwares · Bitdefender · Sensibilisation</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+            <a href="assets/docs/11_rapport_migration_serveurs_virtuels.docx" download class="dl-card">
+                <i class="ri-file-word-line"></i>
+                <div class="dl-info">
+                    <span class="dl-title">Rapport migration serveurs virtuels</span>
+                    <span class="dl-meta">VMware ESXi 8 · AD · Fichiers · Impression</span>
+                </div>
+                <i class="ri-download-line dl-icon"></i>
+            </a>
+        </div>
+    </div>
+
 </section>
 
 <!-- ══ FOOTER ══ -->
