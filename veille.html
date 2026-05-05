@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Veille – Minage GPU | Portfolio Tomas Cohen</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/img/icon.ico" type="image/x-icon">
+
+    <style>
+        /* ══ COMMON.CSS ══ */
+        * { padding:0; margin:0; box-sizing:border-box; font-family:'Inter',sans-serif; text-decoration:none; list-style:none; scroll-behavior:smooth; }
+
+        :root {
+            --text-color:      #fff;
+            --bg-color:        #171a21;
+            --second-bg-color: #1b2838;
+            --main-color:      #66c0f4;
+            --other-color:     #c7d5e0;
+            --other-color3:    #2a475e;
+            --h1-font: 4.5rem;
+            --h2-font: 2.9rem;
+            --h3-font: 1.5rem;
+            --p-font:  1rem;
+        }
+
+        body { color:var(--text-color); background:var(--bg-color); }
+        a    { text-decoration:none; color:inherit; }
+
+        /* ══ HEADER ══ */
+        header {
+            position:fixed; width:100%; top:0; right:0; z-index:1000;
+            display:flex; align-items:center; justify-content:space-between;
+            padding:40px 16%; background:transparent; transition:all .50s ease;
+        }
+        header.sticky { background:var(--bg-color); box-shadow:0 .1rem 1rem rgba(0,0,0,.2); padding:16px 16%; }
+        .logo { font-size:36px; color:var(--text-color); font-weight:600; }
+        span  { color:var(--main-color); }
+        .navlist { display:flex; }
+        .navlist a { font-size:var(--p-font); font-weight:500; color:var(--other-color); margin-left:40px; transition:all .50s ease; }
+        .navlist a:hover, .navlist a.active { color:var(--main-color); text-shadow:3px 3px 20px var(--main-color),-2px 1px 30px var(--text-color); }
+        #menu-icon { font-size:35px; z-index:10001; cursor:pointer; display:none; }
+        section { padding:90px 16% 80px; }
+
+        /* ══ HERO PAGE INTÉRIEURE (même style que réalisations) ══ */
+        .hero {
+            position:relative;
+            padding:160px 16% 80px;
+            background:var(--second-bg-color);
+            overflow:hidden;
+        }
+        .hero::before {
+            content:""; position:absolute; inset:0;
+            background-image:
+                linear-gradient(rgba(102,192,244,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102,192,244,.04) 1px, transparent 1px);
+            background-size:50px 50px; pointer-events:none;
+        }
+        .hero::after {
+            content:""; position:absolute; top:-100px; right:-100px;
+            width:500px; height:500px;
+            background:radial-gradient(circle, rgba(102,192,244,.12) 0%, transparent 70%);
+            pointer-events:none;
+        }
+        .hero-inner {
+            position:relative; display:grid;
+            grid-template-columns:1fr auto; align-items:center; gap:3rem;
+        }
+        .hero-left .breadcrumb { display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--other-color); margin-bottom:1.4rem; }
+        .hero-left .breadcrumb a { color:var(--other-color); transition:color .3s; }
+        .hero-left .breadcrumb a:hover { color:var(--main-color); }
+        .hero-left .breadcrumb i { color:var(--other-color3); font-size:.7rem; }
+        .hero-left h1 { font-size:clamp(2.2rem,4vw,3.8rem); font-weight:900; line-height:1.15; margin-bottom:1rem; }
+        .hero-left p  { color:var(--other-color); font-size:1rem; line-height:1.8; max-width:560px; margin-bottom:2rem; }
+        .hero-right   { display:flex; flex-direction:column; gap:1rem; min-width:220px; }
+        .hero-badge {
+            background:#2d343f; border:1px solid var(--other-color3); border-radius:14px;
+            padding:1rem 1.4rem; display:flex; align-items:center; gap:.9rem;
+            box-shadow:0 0 5px var(--main-color); transition:all .4s ease;
+        }
+        .hero-badge:hover { border-color:var(--main-color); box-shadow:0 0 15px var(--main-color); }
+        .hero-badge i { font-size:1.5rem; color:var(--main-color); flex-shrink:0; }
+        .hero-badge .b-val { font-size:1.4rem; font-weight:900; color:var(--text-color); display:block; line-height:1; }
+        .hero-badge .b-lbl { font-size:.72rem; color:var(--other-color); margin-top:.2rem; }
+
+        /* ══ BOUTONS ══ */
+        .btn { display:inline-flex; align-items:center; gap:.5rem; padding:11px 26px; background:var(--main-color); color:var(--bg-color); border:2px solid var(--main-color); border-radius:24px; font-size:15px; font-weight:600; transition:all .50s ease; }
+        .btn:hover { background:transparent; color:var(--main-color); box-shadow:0 0 20px var(--main-color); }
+        .btn-outline { display:inline-flex; align-items:center; gap:.5rem; padding:11px 26px; background:transparent; color:var(--main-color); border:2px solid var(--main-color); border-radius:24px; font-size:15px; font-weight:600; transition:all .50s ease; }
+        .btn-outline:hover { background:var(--main-color); color:var(--bg-color); box-shadow:0 0 20px var(--main-color); }
+
+        /* ══ TITRES ══ */
+        .center-text { text-align:center; }
+        .center-text h2 { font-size:var(--h2-font); margin-bottom:4.2rem; }
+
+        /* ══ INTRO ══ */
+        .intro { background:var(--bg-color); }
+        .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-top:3rem; }
+        .intro-grid img { width:100%; border-radius:14px; border:3px solid var(--main-color); box-shadow:0 0 20px var(--main-color); height:320px; object-fit:cover; }
+        .intro-text p   { color:var(--other-color); line-height:2; font-size:var(--p-font); margin-bottom:1rem; }
+        .tag-list { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.2rem; }
+        .tag { background:var(--other-color3); color:var(--main-color); border:1px solid var(--main-color); border-radius:24px; padding:.3em 1em; font-size:.8rem; font-weight:600; }
+
+        /* ══ ÉTAPES (cards style .box certifications) ══ */
+        .etapes { background:var(--second-bg-color); }
+        .etapes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; margin-top:4.2rem; }
+
+        .etape-card {
+            background:#2d343f; border-radius:28px;
+            border:1px solid transparent; box-shadow:0 0 5px var(--main-color);
+            overflow:hidden; transition:all .50s ease; position:relative;
+        }
+        .etape-card:hover { border:1px solid var(--main-color); transform:translateY(-5px) scale(1.02); box-shadow:0 0 20px var(--main-color); }
+        .etape-card img { width:100%; height:200px; object-fit:cover; display:block; transition:transform .3s ease; }
+        .etape-card:hover img { transform:scale(1.05); }
+        .etape-num {
+            position:absolute; top:12px; left:12px;
+            background:var(--main-color); color:var(--bg-color); font-weight:900; font-size:1rem;
+            width:38px; height:38px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            box-shadow:0 0 12px var(--main-color);
+        }
+        .etape-body { padding:1.5rem 1.8rem 2rem; }
+        .etape-body h3 { font-size:1.15rem; font-weight:800; margin-bottom:.7rem; color:var(--text-color); }
+        .etape-body p  { color:var(--other-color); font-size:.9rem; line-height:1.8; margin-bottom:1rem; }
+        .spec-list { display:flex; flex-direction:column; gap:.4rem; }
+        .spec-item { display:flex; align-items:flex-start; gap:.5rem; color:var(--other-color); font-size:.85rem; }
+        .spec-item i { color:var(--main-color); font-size:1rem; margin-top:.1rem; flex-shrink:0; }
+
+        /* ══ TABLEAU COMPOSANTS ══ */
+        .composants { background:var(--bg-color); }
+        .table-wrap { overflow-x:auto; border-radius:16px; box-shadow:0 0 15px rgba(102,192,244,.15); margin-top:4.2rem; }
+        table { width:100%; border-collapse:collapse; background:#2d343f; min-width:600px; }
+        thead th { padding:.9rem 1rem; text-align:left; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--other-color3); color:var(--main-color); border:1px solid #1e2d3d; }
+        tbody tr { border-bottom:1px solid #1e2d3d; transition:background .2s; }
+        tbody tr:hover { background:rgba(102,192,244,.06); }
+        tbody td { padding:.85rem 1rem; font-size:.88rem; color:var(--other-color); border:1px solid #1e2d3d; vertical-align:middle; }
+        tbody td:first-child { color:var(--text-color); font-weight:600; }
+        .badge { display:inline-block; padding:.2em .8em; border-radius:24px; font-size:.72rem; font-weight:700; }
+        .badge-vert   { background:rgba(16,124,16,.2); color:#4ade80; border:1px solid #4ade80; }
+        .badge-orange { background:rgba(251,146,60,.15); color:#fb923c; border:1px solid #fb923c; }
+        .badge-bleu   { background:rgba(102,192,244,.15); color:var(--main-color); border:1px solid var(--main-color); }
+
+        /* ══ LOGICIELS ══ */
+        .logiciels { background:var(--second-bg-color); }
+        .logiciels-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.8rem; margin-top:4.2rem; }
+        .logiciel-card { background:#2d343f; border-radius:28px; border:1px solid transparent; box-shadow:0 0 5px var(--main-color); padding:2rem 1.8rem; transition:all .50s ease; }
+        .logiciel-card:hover { border:1px solid var(--main-color); transform:translateY(-5px) scale(1.02); box-shadow:0 0 20px var(--main-color); }
+        .logiciel-icon { font-size:2.2rem; color:var(--main-color); margin-bottom:1rem; display:block; }
+        .logiciel-card h3 { font-size:1.05rem; font-weight:800; margin-bottom:.5rem; }
+        .logiciel-card .role { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--main-color); margin-bottom:.8rem; display:block; }
+        .logiciel-card p { color:var(--other-color); font-size:.88rem; line-height:1.7; }
+
+        /* ══ SECTION SUPERVISON / OVERCLOCK (grille 2 colonnes) ══ */
+        .supervision { background:var(--bg-color); }
+        .overclock   { background:var(--second-bg-color); }
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-top:3rem; }
+        .two-col img { width:100%; border-radius:14px; border:3px solid var(--main-color); box-shadow:0 0 20px var(--main-color); }
+        .col-text h3 { font-size:1.5rem; font-weight:800; margin-bottom:1rem; }
+        .col-text p  { color:var(--other-color); line-height:1.9; margin-bottom:1rem; font-size:var(--p-font); }
+        .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+        .kpi { background:#2d343f; border-radius:14px; padding:1rem 1.2rem; box-shadow:0 0 5px var(--main-color); text-align:center; }
+        .kpi .val { font-size:1.8rem; font-weight:900; color:var(--main-color); display:block; }
+        .kpi .lbl { font-size:.75rem; color:var(--other-color); margin-top:.2rem; }
+        .param-list { display:flex; flex-direction:column; gap:.7rem; margin-top:1.2rem; }
+        .param-item { display:flex; align-items:center; gap:1rem; background:#2d343f; border-radius:10px; padding:.8rem 1.2rem; box-shadow:0 0 5px var(--main-color); }
+        .param-item i { color:var(--main-color); font-size:1.2rem; flex-shrink:0; }
+        .param-item strong { font-size:.9rem; color:var(--text-color); }
+        .param-item em { font-size:.82rem; color:var(--other-color); margin-left:.5rem; font-style:normal; }
+
+        /* ══ RENTABILITÉ ══ */
+        .rentabilite { background:var(--bg-color); }
+        .renta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:4.2rem; }
+        .renta-card { background:#2d343f; border-radius:28px; border:1px solid transparent; box-shadow:0 0 5px var(--main-color); padding:2rem; text-align:center; transition:all .5s ease; }
+        .renta-card:hover { border:1px solid var(--main-color); transform:translateY(-5px); box-shadow:0 0 20px var(--main-color); }
+        .renta-card .icon { font-size:2.5rem; color:var(--main-color); margin-bottom:1rem; display:block; }
+        .renta-card h3 { font-size:1rem; font-weight:700; margin-bottom:.5rem; }
+        .renta-card p  { color:var(--other-color); font-size:.88rem; line-height:1.7; }
+        .renta-note { margin-top:2rem; background:rgba(102,192,244,.06); border:1px solid rgba(102,192,244,.2); border-radius:14px; padding:1.4rem 2rem; color:var(--other-color); font-size:.9rem; line-height:1.8; }
+        .renta-note strong { color:var(--main-color); }
+
+        /* ══ SOURCES ══ */
+        .sources { background:var(--second-bg-color); }
+        .sources-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.2rem; margin-top:4.2rem; }
+        .source-link { display:flex; align-items:center; gap:.8rem; background:#2d343f; border-radius:14px; padding:1rem 1.4rem; box-shadow:0 0 5px var(--main-color); border:1px solid transparent; color:var(--other-color); font-size:.9rem; font-weight:500; transition:all .4s ease; }
+        .source-link i { color:var(--main-color); font-size:1.3rem; flex-shrink:0; }
+        .source-link:hover { border:1px solid var(--main-color); color:var(--main-color); transform:translateY(-2px); box-shadow:0 0 15px var(--main-color); }
+
+        /* ══ FOOTER ══ */
+        .footer { padding:22px 16%; background:var(--bg-color); display:flex; align-items:center; justify-content:space-between; gap:2rem; }
+        .copyright p { font-size:15px; font-weight:400; color:var(--other-color); }
+        .footer-link { color:var(--other-color); }
+        .footer-link:hover { color:var(--text-color); }
+        .scroll-top { display:inline-flex; align-items:center; justify-content:center; background:var(--other-color3); width:45px; height:45px; border-radius:50%; color:var(--text-color); font-size:27px; }
+
+        /* ══ RESPONSIVE ══ */
+        @media(max-width:1700px){ header{padding:20px 8%;} header.sticky{padding:14px 8%;} section{padding:90px 8% 80px;} .footer{padding:18px 8%;} .logo{font-size:28px;} .hero{padding:140px 8% 70px;} }
+        @media(max-width:1380px){ header{padding:20px 5%;} header.sticky{padding:14px 5%;} section{padding:90px 5% 80px;} .footer{padding:18px 5%;} .hero{padding:130px 5% 60px;} }
+        @media(max-width:1100px){ .hero-inner{grid-template-columns:1fr;} .hero-right{flex-direction:row;flex-wrap:wrap;} .hero-badge{flex:1;min-width:140px;} .two-col{grid-template-columns:1fr;} }
+        @media(max-width:1240px){ :root{--h1-font:4rem;--h2-font:2.2rem;--p-font:15px;} .intro-grid{grid-template-columns:1fr;} .renta-grid{grid-template-columns:1fr 1fr;} }
+        @media(max-width:950px){
+            :root{--h1-font:3.5rem;}
+            #menu-icon{display:block;}
+            .navlist{position:absolute;top:100%;right:-100%;width:255px;min-height:100vh;flex-direction:column;background:var(--bg-color);transition:all .50s ease;}
+            .navlist a{display:block;padding:17px;font-size:22px;border-top:1px solid #2f3138;border-bottom:1px solid #000;}
+            .navlist.active{right:0;}
+        }
+        @media(max-width:600px){ .renta-grid{grid-template-columns:1fr;} .kpi-grid{grid-template-columns:1fr 1fr;} }
+        @media(max-width:470px){ :root{--h1-font:3rem;--h2-font:2rem;} }
+    </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header id="header">
+    <a href="index.html" class="logo">Portfo<span>lio.</span></a>
+    <div class="bx bx-menu-alt-right" id="menu-icon"></div>
+    <ul class="navlist" id="navlist">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="entreprise.html">Entreprise</a></li>
+        <li><a href="realisations.html">Réalisations</a></li>
+        <li><a href="veille.html" class="active">Veille</a></li>
+    </ul>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="breadcrumb">
+                <a href="index.html">Accueil</a>
+                <i class="ri-arrow-right-s-line"></i>
+                <span style="color:var(--main-color)">Veille Technologique</span>
+            </div>
+            <h1>Minage de <span>Crypto</span><br>par <span>GPU</span></h1>
+            <p>Comment construire, configurer et optimiser un rig de minage de cryptomonnaie à base de cartes graphiques — et même vendre sa puissance de calcul.</p>
+            <a href="#intro" class="btn">Découvrir <i class="ri-arrow-down-line"></i></a>
+        </div>
+        <div class="hero-right">
+            <div class="hero-badge">
+                <i class="ri-cpu-line"></i>
+                <div><span class="b-val">6 GPU</span><div class="b-lbl">Par rig de minage</div></div>
+            </div>
+            <div class="hero-badge">
+                <i class="ri-flashlight-line"></i>
+                <div><span class="b-val">~1200W</span><div class="b-lbl">Consommation / rig</div></div>
+            </div>
+            <div class="hero-badge">
+                <i class="ri-time-line"></i>
+                <div><span class="b-val">24/7</span><div class="b-lbl">Fonctionnement continu</div></div>
+            </div>
+            <div class="hero-badge">
+                <i class="ri-line-chart-line"></i>
+                <div><span class="b-val">PoW</span><div class="b-lbl">Proof of Work</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ INTRODUCTION ══ -->
+<section class="intro" id="intro">
+    <div class="center-text">
+        <h2>C'est quoi le <span>minage par GPU</span> ?</h2>
+    </div>
+    <div class="intro-grid">
+        <img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476?w=800&q=80" alt="Rig de minage GPU">
+        <div class="intro-text">
+            <p>Le minage de cryptomonnaie par <strong style="color:var(--main-color)">carte graphique (GPU)</strong> consiste à utiliser la puissance de calcul de plusieurs GPU pour valider des transactions sur une blockchain et recevoir des cryptomonnaies en récompense.</p>
+            <p>Contrairement à un processeur classique (CPU), un GPU peut effectuer des <strong style="color:var(--main-color)">milliers de calculs en parallèle</strong>, ce qui le rend bien plus efficace pour les algorithmes de minage comme Kawpow, Autolykos ou Ethash.</p>
+            <p>Passionné par le hardware, j'ai monté mon propre rig de minage. Cette veille retrace les étapes de construction, les outils utilisés et les enjeux techniques — directement en lien avec mes compétences SISR.</p>
+            <div class="tag-list">
+                <span class="tag">Kawpow</span><span class="tag">Autolykos</span>
+                <span class="tag">Proof of Work</span><span class="tag">NVIDIA / AMD</span>
+                <span class="tag">HiveOS</span><span class="tag">Overclock</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ÉTAPES ══ -->
+<section class="etapes" id="etapes">
+    <div class="center-text">
+        <h2>Les <span>étapes</span> de construction</h2>
+    </div>
+    <div class="etapes-grid">
+
+        <div class="etape-card">
+            <div class="etape-num">01</div>
+            <img src="assets/img/veille/chassis.webp" alt="Chassis rig" onerror="this.src='https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Le châssis (Frame)</h3>
+                <p>Structure aluminium ouverte pour accueillir les GPU avec une ventilation maximale.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Rack ouvert alu 6 GPU</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Ventilation maximale</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : 30–150€</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">02</div>
+            <img src="https://m.media-amazon.com/images/I/71w+fkKqoML._AC_SX425_.jpg" alt="ASUS B250 Mining Expert" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Carte mère ASUS B250 Mining Expert</h3>
+                <p>Supporte jusqu'à 19 GPU simultanément via des ports PCIe dédiés au minage.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>19 slots PCIe</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Socket LGA 1151</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : 80–120€</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">03</div>
+            <img src="assets/img/veille/" alt="Intel Celeron G3900" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80'">
+            <div class="etape-body">
+                <h3>CPU & RAM</h3>
+                <p>Le CPU n'est pas sollicité — un Celeron G3900 à 20€ suffit amplement avec 4 Go DDR4.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Intel Celeron G3900</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>4 Go DDR4 Kingston</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Budget : ~35–60€</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">04</div>
+            <img src="assets/img/cpu%20ram.jpeg" alt="RTX 3060 Ti" onerror="this.src='https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Les cartes graphiques (GPU)</h3>
+                <p>Le cœur du rig. NVIDIA RTX 30xx ou AMD RX 6000 pour le meilleur hashrate par watt.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>RTX 3060 Ti : ~45 MH/s</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Via risers PCIe x1→x16</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : 200–400€/u</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">05</div>
+            <img src="assets/img/riser.webp" alt="PCIe Riser" onerror="this.src='https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Les Risers PCIe</h3>
+                <p>Éloignent chaque GPU de la carte mère via USB 3.0 pour mieux les espacer et ventiler.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>PCIe x16→x1 via USB 3.0</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>1 riser par GPU</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : 5–10€/u</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">06</div>
+            <img src="https://m.media-amazon.com/images/I/71Z2JH6TWML._AC_SX425_.jpg" alt="EVGA PSU" onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228f2c41e?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Alimentation EVGA 1600W</h3>
+                <p>Certifiée 80+ Platinum, entièrement modulaire. Prévoir 150W par GPU + 100W pour le reste.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>EVGA SuperNOVA 1600W</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>80+ Platinum</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : 150–250€</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="etape-card">
+            <div class="etape-num">07</div>
+            <img src="https://m.media-amazon.com/images/I/61Ru8iGlBxL._AC_SX425_.jpg" alt="SSD Kingston" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80'">
+            <div class="etape-body">
+                <h3>Stockage & OS — HiveOS</h3>
+                <p>Un SSD Kingston 120 Go suffit pour HiveOS, le système Linux dédié gérable à distance.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Kingston A400 120 Go</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>HiveOS – Linux spécialisé</div>
+                    <div class="spec-item"><i class="ri-checkbox-circle-line"></i>Prix : ~15€</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BONUS -->
+        <div class="etape-card" style="border-color:rgba(102,192,244,.4);">
+            <div class="etape-num" style="background:var(--other-color3);color:var(--main-color);">⭐</div>
+            <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?w=600&q=80" alt="Vendre puissance de calcul" onerror="this.src='https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&q=80'">
+            <div class="etape-body">
+                <h3>BONUS — Vendre sa puissance</h3>
+                <p>Plutôt que miner directement, loue ton GPU à d'autres via des plateformes dédiées.</p>
+                <div class="spec-list">
+                    <div class="spec-item"><i class="ri-arrow-right-circle-line"></i>NiceHash – payé en Bitcoin</div>
+                    <div class="spec-item"><i class="ri-arrow-right-circle-line"></i>Vast.ai – GPU pour l'IA/ML</div>
+                    <div class="spec-item"><i class="ri-arrow-right-circle-line"></i>Salad – crédits Steam/PayPal</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ COMPOSANTS ══ -->
+<section class="composants" id="composants">
+    <div class="center-text">
+        <h2>Liste des <span>composants</span></h2>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th><th>Modèle</th><th>Rôle</th><th>Prix estimé</th><th>Importance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Carte mère</td><td>ASUS B250 Mining Expert</td><td>19 slots PCIe pour GPU</td><td>~80–120€</td><td><span class="badge badge-vert">Essentiel</span></td></tr>
+                <tr><td>CPU</td><td>Intel Celeron G3900</td><td>Processeur minimal</td><td>~20–40€</td><td><span class="badge badge-bleu">Basique</span></td></tr>
+                <tr><td>RAM</td><td>Kingston 4 Go DDR4</td><td>Mémoire système</td><td>~15–25€</td><td><span class="badge badge-bleu">Basique</span></td></tr>
+                <tr><td>GPU × 6</td><td>RTX 3060 Ti / RX 6700 XT</td><td>Moteurs de calcul</td><td>~200–400€/u</td><td><span class="badge badge-vert">Essentiel</span></td></tr>
+                <tr><td>PSU</td><td>EVGA SuperNOVA 1600W</td><td>Alimentation stable</td><td>~150–250€</td><td><span class="badge badge-vert">Essentiel</span></td></tr>
+                <tr><td>Risers PCIe</td><td>Riser USB 3.0 x16→x1</td><td>Connecter GPU à distance</td><td>~5–10€/u</td><td><span class="badge badge-vert">Essentiel</span></td></tr>
+                <tr><td>Châssis</td><td>Rack ouvert alu 6 GPU</td><td>Support et ventilation</td><td>~30–80€</td><td><span class="badge badge-orange">Recommandé</span></td></tr>
+                <tr><td>SSD</td><td>Kingston A400 120 Go</td><td>Stockage HiveOS</td><td>~15–30€</td><td><span class="badge badge-bleu">Basique</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ══ LOGICIELS ══ -->
+<section class="logiciels" id="logiciels">
+    <div class="center-text">
+        <h2>Les <span>logiciels</span> indispensables</h2>
+    </div>
+    <div class="logiciels-grid">
+        <div class="logiciel-card">
+            <i class="ri-dashboard-3-line logiciel-icon"></i>
+            <h3>HiveOS</h3>
+            <span class="role">Système d'exploitation</span>
+            <p>OS Linux spécialisé minage. Dashboard web pour surveiller hashrate, températures et redémarrer les GPU à distance via SSH.</p>
+        </div>
+        <div class="logiciel-card">
+            <i class="ri-terminal-box-line logiciel-icon"></i>
+            <h3>T-Rex Miner</h3>
+            <span class="role">Logiciel de minage</span>
+            <p>Miner haute performance pour GPU NVIDIA. Supporte Kawpow, Octopus, Autolykos. Dashboard HTTP intégré.</p>
+        </div>
+        <div class="logiciel-card">
+            <i class="ri-terminal-box-line logiciel-icon"></i>
+            <h3>lolMiner</h3>
+            <span class="role">Logiciel de minage</span>
+            <p>Compatible NVIDIA et AMD. Idéal pour Autolykos (Ergo). Faible commission développeur, mises à jour fréquentes.</p>
+        </div>
+        <div class="logiciel-card">
+            <i class="ri-bar-chart-2-line logiciel-icon"></i>
+            <h3>MSI Afterburner</h3>
+            <span class="role">Overclock / Undervolt</span>
+            <p>Réduire la tension GPU et booster les fréquences mémoire pour maximiser le hashrate et réduire la conso.</p>
+        </div>
+        <div class="logiciel-card">
+            <i class="ri-calculator-line logiciel-icon"></i>
+            <h3>WhatToMine</h3>
+            <span class="role">Calculateur rentabilité</span>
+            <p>Calcule en temps réel quelle crypto miner selon ton matériel et le coût de l'électricité. Outil de référence.</p>
+        </div>
+        <div class="logiciel-card">
+            <i class="ri-group-line logiciel-icon"></i>
+            <h3>2Miners / Flexpool</h3>
+            <span class="role">Pool de minage</span>
+            <p>Mutualise la puissance de calcul avec d'autres mineurs pour recevoir des récompenses régulières.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ SUPERVISION ══ -->
+<section class="supervision" id="supervision">
+    <div class="center-text">
+        <h2>Supervision <span>à distance</span></h2>
+    </div>
+    <div class="two-col">
+        <div class="col-text">
+            <h3>Surveiller son rig avec <span>HiveOS</span></h3>
+            <p>HiveOS est un système d'exploitation Linux gratuit conçu pour le minage. Il permet de gérer intégralement son rig depuis un navigateur web, sans intervention physique.</p>
+            <p>Compétence directement liée au BTS SIO SISR : supervision d'infrastructure, accès SSH à distance, gestion de systèmes Linux embarqués et monitoring en temps réel.</p>
+            <div class="kpi-grid">
+                <div class="kpi"><span class="val">24/7</span><div class="lbl">Monitoring continu</div></div>
+                <div class="kpi"><span class="val">SSH</span><div class="lbl">Accès à distance</div></div>
+                <div class="kpi"><span class="val">~70°C</span><div class="lbl">Temp. cible GPU</div></div>
+                <div class="kpi"><span class="val">Auto</span><div class="lbl">Redémarrage crash</div></div>
+            </div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80" alt="Dashboard monitoring">
+    </div>
+</section>
+
+<!-- ══ OVERCLOCK ══ -->
+<section class="overclock" id="overclock">
+    <div class="center-text">
+        <h2>Optimisation <span>Overclock / Undervolt</span></h2>
+    </div>
+    <div class="two-col">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=700&q=80" alt="Overclocking GPU">
+        <div class="col-text">
+            <h3>Maximiser le hashrate, <span>réduire la conso</span></h3>
+            <p>En ajustant finement les paramètres GPU, on peut augmenter le hashrate de 20 à 30% tout en réduisant la consommation électrique de 30 à 40%.</p>
+            <div class="param-list">
+                <div class="param-item"><i class="ri-cpu-line"></i><strong>Core Clock</strong><em>−100 à −200 MHz pour baisser la conso</em></div>
+                <div class="param-item"><i class="ri-flashlight-line"></i><strong>Memory Clock</strong><em>+500 à +1500 MHz pour booster le hashrate</em></div>
+                <div class="param-item"><i class="ri-battery-line"></i><strong>Power Limit</strong><em>60–75% de la valeur maximale</em></div>
+                <div class="param-item"><i class="ri-temp-cold-line"></i><strong>Fan Speed</strong><em>60–80% pour rester sous 70°C</em></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ RENTABILITÉ ══ -->
+<section class="rentabilite" id="rentabilite">
+    <div class="center-text">
+        <h2>Enjeux de <span>rentabilité</span></h2>
+    </div>
+    <div class="renta-grid">
+        <div class="renta-card">
+            <i class="ri-flashlight-line icon"></i>
+            <h3>Coût de l'électricité</h3>
+            <p>En France, le kWh coûte environ <strong style="color:var(--main-color)">0,22€</strong>. Un rig de 6 GPU consomme entre 800W et 1200W en continu, soit ~<strong style="color:var(--main-color)">150–200€/mois</strong>.</p>
+        </div>
+        <div class="renta-card">
+            <i class="ri-line-chart-line icon"></i>
+            <h3>Cours des cryptos</h3>
+            <p>La rentabilité dépend directement du cours de la cryptomonnaie minée. En bear market, le minage peut ne plus couvrir les frais électriques.</p>
+        </div>
+        <div class="renta-card">
+            <i class="ri-settings-3-line icon"></i>
+            <h3>Difficulté réseau</h3>
+            <p>Plus il y a de mineurs, plus la difficulté augmente. Il faut surveiller la difficulté réseau et savoir basculer d'une crypto à une autre.</p>
+        </div>
+    </div>
+    <div class="renta-note">
+        ⚡ <strong>The Merge (sept. 2022) :</strong> Depuis la migration d'Ethereum vers le Proof of Stake, les mineurs GPU se sont tournés vers <strong>Ravencoin (RVN)</strong>, <strong>Ergo (ERG)</strong>, <strong>Ethereum Classic (ETC)</strong> ou <strong>Flux (FLUX)</strong>. Le marché reste actif et en constante évolution.
+    </div>
+</section>
+
+<!-- ══ SOURCES ══ -->
+<section class="sources" id="sources">
+    <div class="center-text">
+        <h2>Sources de <span>veille</span></h2>
+    </div>
+    <div class="sources-grid">
+        <a href="https://whattomine.com" target="_blank" class="source-link"><i class="ri-calculator-line"></i>WhatToMine.com</a>
+        <a href="https://2miners.com" target="_blank" class="source-link"><i class="ri-group-line"></i>2Miners.com</a>
+        <a href="https://coindesk.com" target="_blank" class="source-link"><i class="ri-newspaper-line"></i>CoinDesk</a>
+        <a href="https://www.tomshardware.com" target="_blank" class="source-link"><i class="ri-cpu-line"></i>Tom's Hardware</a>
+        <a href="https://hiveos.farm" target="_blank" class="source-link"><i class="ri-dashboard-3-line"></i>HiveOS.farm</a>
+        <a href="https://github.com/trexminer/T-Rex" target="_blank" class="source-link"><i class="ri-github-line"></i>T-Rex Miner GitHub</a>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+    <div class="copyright">
+        <p>Portfolio de <strong>Tomas Cohen</strong> · BTS SIO SISR · Veille — Minage GPU</p>
+    </div>
+    <a href="#home" class="scroll-top"><i class="ri-arrow-up-line"></i></a>
+</footer>
+
+<script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('sticky', window.scrollY > 50);
+    });
+    const menuIcon = document.getElementById('menu-icon');
+    const navlist  = document.getElementById('navlist');
+    menuIcon.addEventListener('click', () => {
+        menuIcon.classList.toggle('bx-x');
+        navlist.classList.toggle('active');
+    });
+</script>
+
+</body>
+</html>
